@@ -19,9 +19,9 @@ there is no such valid inference rule.
 If a ball, b, is round *and* b is also red, is b red?
 
 A: yes/no: 
-
+Yes
 B: Why? 
-
+and elimination right
 
 #1B
 
@@ -30,58 +30,63 @@ and I give you flowers *or* I give you chocolates, will
 you be happy?
 
 A: yes/no: 
-
+Yes
 B: Why?
-
+or elimination
 
 #1C: If giraffes are just zebras in disguise, then the 
 moon is made of green cheese?
 
 A. yes/: 
-
+yes
 B. Why?
-
+false elimination (i.e., from the proof of false "giraffes are just zebras in disguise",
+we may derive a proof of any other proposition)
 
 #1D. If x = y implies that 0 = 1, then is it true that
 x ≠ y?
 
 A. yes/no: 
-
+yes
 B. Why?
-
+not definition (not X <-> (X -> false))
+in this case, (x=y) -> false, so not (x=y), which is equivalent to (x ≠ y)
 
 
 #1E. If every zebra has stripes and Zoe is a Zebra then
 Zoe has stripes.
 
 A. yes/no: 
-
+yes
 B. Why?
-
+all elimination
 
 #1F. If Z could be *any* Zebra and Z has stripes, then 
 *every* Zebra has stripes.
 
 A. Yes/no: 
-
+no
 B: Why?
-
+there is no valid inference rule which states that if some particular x in X, Y then X -> Y
 
 #1G. If whenever the wind blows, the leaves move, and 
 the leaves are moving, then the wind is blowing.
 
 A. yes/no: 
-
+no
 B. Why? 
-
+the converse is not a valid inference rule, for instance (X -> Y) implies (Y -> X)
+is not true when X is false and Y is true (false implies true but true does not imply false)
 
 #1H: If Gina is nice *or* Gina is tall, and Gina is nice,
 then Gina is not tall. (The "or" here is understood to be
 the or of predicate logic.)
 
 A. yes/no: 
-
+no
 B. Why?
+the disjunct is not valid for logical OR, for example (X OR Y) -> NOT Y
+is false when Y and X are true, as OR evaluates to true when both arguments are true
 -/
 
 
@@ -94,10 +99,11 @@ logic: X ∨ ¬Y.
 
 #2A: Is is satisfiable? If so, give a model (a binding of 
 the variables to values that makes the expressions true).
-
+Yes it is satisfiable, a model which satisfies it is X = true, Y = true
 
 #2B: Is it valid? Explain your answer. 
-
+It is not valid because it is not true for every X and Y, for instance X = false, Y = true
+makes the expression evaluate to false (false OR not true = false OR false = false)
 
 -/
 
@@ -113,7 +119,7 @@ true if and only if Q is true) then if P is true then Q is
 true.
 -/
 
-#check _
+#check (∀ (P Q : Prop), (P ↔ Q) → (P → Q))
 
 
 
@@ -129,6 +135,7 @@ be ignored here.
 
 /-
 Answer:
+for all natural numbers n, m, n being less than m implies that m minus n is greater than 0
 -/
 
 -- B
@@ -137,6 +144,7 @@ Answer:
 
 /-
 Answer:
+there exists some natural number n such that for all natural numbers m, m is greater than n
 -/
 
 
@@ -147,6 +155,7 @@ variables (isEven: ℕ → Prop) (isOdd: ℕ → Prop)
 
 /-
 Answer:
+for ever natural number n, n is even or n is odd
 -/
 
 
@@ -156,6 +165,7 @@ Answer:
 
 /-
 Answer:
+for any arbitrary proposition P, either P is true or NOT P is true
 -/
 
 
@@ -165,6 +175,7 @@ Answer:
 
 /-
 Answer:
+for any arbitrary proposition P, it is not true that both P is true and NOT P is true
 -/
 
 
@@ -189,5 +200,8 @@ variable contagion :
   (hasVirus : Animal → Prop)
   (closeContact : Animal → Animal → Prop), 
   hasVirus a1 → closeContact a1 a2 → hasVirus a2
+
+--for any two animals a1 and a2, regardless of species, if a1 has a virus and comes into
+--close contact with a2, then a2 also has a virus
 
 
