@@ -52,6 +52,15 @@ See how the English presents the "story" of the formal proof in more
 natural, human, terms.
 
 ANSWER HERE:
+
+Suppose Socratese is an object of some type, Person, and that isMortal 
+is one-place predicate taking any Person, p, as an argument, and that
+reduces to a proposition, denoted (isMortal p), that we understand as
+asserting that the particular person, p, is mortal. Next, we take
+everyoneIsMortal as a proof that all people are mortal. Finally, we
+can apply this proof (essentially using the ∀ elimination rule) to Socratese,
+obtaining a proof that Socratese is mortal.
+
 -/
 
 
@@ -71,22 +80,20 @@ To do so, uncomment the following block of expressions then fill
 in blanks to complete this task.
 -/
 
-/- Uncomment this block to answer the question
 variable Person : Type
-variable Likes : _        -- a predicate with two Person arguments
-variable Jealous : _      -- same thing here  
+variable Likes : Person → Person → Prop       -- a predicate with two Person arguments
+variable Jealous : Person → Person → Prop     -- same thing here  
 variable Triangle :       -- note definition extends to next line
-  ∀ (p1 p2 p3 : Person), _  
-variables ed hannah mel : _
-variable likes_ed_hannah : _
-variable likes_hannah_mel : _
+  ∀ (p1 p2 p3 : Person), Likes p1 p2 → Likes p2 p3 → Jealous p1 p3  
+variables ed hannah mel : Person
+variable likes_ed_hannah : Likes ed hannah
+variable likes_hannah_mel : Likes hannah mel
 -- Finally write and use #check to check an expression that proves that ed is 
 -- jealous of mel.
 -- To ANSWER, fill in the _ with your expression. 
 -- HINT "Apply" what you know.
--/
 
-#check _
+#check Triangle ed hannah mel
 
 
 /- #3: Proofing a propositions involving ∀ and ∨
@@ -96,6 +103,9 @@ the methods of inference we've covered: ∀ (P Q : Prop), P ∧ Q → Q ∨ P.
 
 Do read that proposition carefully, please. You don't need to write a
 long proof. Keep it concise. Identiy the inference rules you use.
+
+Assuming P ∧ Q, apply and_elimination_right to deduce Q. Apply or_introduction to Q to show Q ∨ P.
+Having shown that if P ∧ Q then Q ∨ P, apply arrow_introduction to conclude P ∧ Q → Q ∨ P.
 
 -/
 
@@ -112,7 +122,8 @@ You may (and probably should) break up your expression over several
 lines, using line breaks and indentation to make the answer readable.
 -/
 
-variable Person : Type
+--variable Person : Type
 variable Knows : Person → Person → Prop
-def answer : Prop := 
-    _
+def answer : Prop :=
+    ∀ (A D : Person), ∃ (B C : Person),
+    Knows A B ∧ Knows B C ∧ Knows C D
