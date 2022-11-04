@@ -14,7 +14,7 @@ answer.
 
 def and_associative : Prop := 
   ∀ (P Q R : Prop),
-    P ∧ (Q ∧ R) ↔ (P ∧ Q) ∧ R
+    (P ∧ Q) ∧ R ↔ P ∧ (Q ∧ R)
 
 
 /- #1B [10 points]
@@ -43,6 +43,44 @@ Hint: unfold and_associative to start.
 
 theorem and_assoc_true : and_associative :=
 begin
+unfold and_associative,
+assume P Q R,
+apply iff.intro _ _,
+
+-- forward
+assume h,
+
+/-
+let pq : P ∧ Q := and.elim_left h,
+let r : R := and.elim_right h,
+let p : P := and.elim_left pq,
+let q : Q := and.elim_right pq,
+-/
+
+cases h with pq r,
+cases pq with p q,
+
+/-
+apply and.intro _ _,
+cases h with pq r,
+cases pq with p q,
+exact p,
+apply and.intro _ _,
+exact and.elim_right(and.elim_left h),
+exact (and.elim_right h),
+-/
+
+/-
+cases h with pq r,
+cases pq with p q,
+-/
+apply and.intro p (and.intro q r),
+
+-- Reverse
+assume h,
+cases h with p qr,
+cases qr with q r,
+exact (and.intro (and.intro p q) r),
 end
 
 
