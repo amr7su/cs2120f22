@@ -24,8 +24,8 @@ State and prove the proposition that there's some
 natural number whose square is 144.
 -/
 
-example : _ := _
-
+example : ∃ (n : ℕ), n*n = 144 :=
+  exists.intro 12 rfl
 
 /- #1B.
 State and prove the proposition that there is 
@@ -35,7 +35,7 @@ for string.append, the function for gluing two
 strings together into one.
 -/
 
-example : _ := _
+example : ∃ (s : string), s ++ "!" = "I love logic!" := exists.intro "I love logic" rfl
 
 /- #1C.
 
@@ -46,8 +46,12 @@ takes just one witness as a time, so you will
 have to apply it more than once.
 -/
 
-example : _ :=
+example : ∃ (x y z : ℕ), x*x + y*y = z*z := 
 begin
+apply exists.intro 3,
+apply exists.intro 4,
+apply exists.intro 5,
+apply rfl
 end
 
 /- #1D
@@ -56,7 +60,7 @@ three natural number arguments, x, y, and z,
 yielding the proposition that x*x + y*y = z*z.
 -/
 
-def pythag_triple (x y z : ℕ) := _
+def pythag_triple (x y z : ℕ) := x*x + y*y = z*z
 
 /- #1E
 State the propositionthat there exist x, y, z, 
@@ -64,9 +68,13 @@ natural numbers, that satisfy the pythag_triple,
 predicate, then prove it. (Use "example : ...")
 -/
 
-example : _  :=
+example : ∃ (x y z : ℕ), pythag_triple x y z := 
 begin
-_
+unfold pythag_triple,
+apply exists.intro 3,
+apply exists.intro 4,
+apply exists.intro 5,
+apply rfl
 end
 
 /- #2A
@@ -79,7 +87,7 @@ n to be a multiple of m? There has to be some
 other number involved, right?
 -/
 
-def multiple_of (n m : ℕ) := ∃ (k), n = m * k  
+def multiple_of (n m : ℕ) := ∃ (k : ℕ), n = m * k  
 
 /- #2B
 
@@ -185,11 +193,16 @@ has to be. Also, be sure to use multiple_of in
 formally stating the proposition to be proved.
 -/
 
-example : _ :=
+example : ∀ (n : ℕ), multiple_of n 6 → multiple_of n 3 :=
 begin
-_
-end 
-
+assume n h,
+unfold multiple_of at h,
+cases h with w,
+unfold multiple_of,
+apply exists.intro (w*2),
+ring,
+exact h_h
+end
 
 /- #2C.
 
@@ -211,9 +224,18 @@ that you can replace equals by equals without
 changing the truth values of propositions. 
 -/
 
-example (n h k : ℕ) : _ :=
+example (n h k : ℕ) : multiple_of n h ∧ multiple_of h k → multiple_of n k :=
 begin
-_
+assume pf,
+unfold multiple_of at pf,
+cases pf with x y,
+cases x with w,
+cases y with w_1,
+unfold multiple_of,
+apply exists.intro (w*w_1),
+rw x_h,
+rw y_h,
+ring
 end
 
 
@@ -237,9 +259,9 @@ example
   (isCool : Person → Prop)
   (LogicMakesCool : ∀ (p), KnowsLogic p → isCool p)
   (SomeoneKnowsLogic : ∃ (p), KnowsLogic p) :
-  _ :=
+  ∃ (p), isCool p :=
 begin
-_
+
 end
 
 
@@ -252,10 +274,13 @@ someone is not happy then not everyone is happy.
 example 
   (Person : Type)
   (Happy : Person → Prop) :
-  _
+  (∃ (p), ¬Happy p) → ¬(∀ (q), Happy q)
   :=
 begin
-  _
+  assume h,
+  cases h,
+  assume f,
+  
 end
 
 /- #3C
@@ -278,11 +303,9 @@ your set of assumptions.
 example 
   (α : Type)
   (P : α → Prop) :
-  _ :=
+  (∀ (p), P p) ↔ ¬(∃ (p), ¬P p):=
 begin
 end 
-
-
 
 /- #3D
 
@@ -297,13 +320,13 @@ taking objects of that type.
 example 
   (T : Type)
   (P : T → Prop) :
-  _ :=
+  ¬(∃ (p), P p) → (∀ (p), ¬P p):=
 begin
-_
+
 end
 
 
-/- #3D
+/- #3E
 Formally state and prove the proposition
 that if there's an object with the property 
 of having property P or property Q then 
@@ -315,7 +338,8 @@ example
   (α : Type)
   (P : α → Prop)
   (Q : α → Prop): 
-  _ :=
+  (∃ (p), P p ∨ Q p) → (∃ (p), P p) ∨ (∃ (q), Q q):=
 begin
+
 end
 
